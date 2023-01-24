@@ -1,69 +1,117 @@
-# noteby_app
- 
-<!-- link for project tracking spreadsheet -->
+copy of project tracking sheet: https://docs.google.com/spreadsheets/d/1xrJs_eHiRdPWIWyC8kW-vX6U-cyy2TVo0Pp1-4N5Dfg/edit?usp=sharing
 
 
-# all_songs = []
-# my_songs = []
-# saved_songs = []
+# import shelve
+
+import shelve
+s = shelve.open("test")
+s['account_user'] = []
+# s['songs_owned'] = []
+# s['note_balance'] = []
+
+accounts = {
+   }
+
+songs = {
+  1: ["Abbey Road","Beatles","Pop", 5],
+  2: ['Do Me A Favour','Artic Monkeys',"Indie Rock", 5],
+  3: ["Despues De La Playa","Bad Bunny","Reggeton", 7],
+  4: ['Sculptures of Anything Goes','Artic Monkeys','Indie Rock', 2],
+  5: ['Vivir Mi Vida', 'Marc Anthony', 'Pop', 3],
+  6: ['The Best Of The Best','Artic Monkeys','Indie Rock', 2],
+  7: ['Aguacero', 'Bad Bunny', 'Reggeton', 5],
+  8: ['I Know The End', 'Pheobe Bridgers', 'Indie Rock', 2]
+  9: ['Fils de joie', 'Stromae', 'French Pop', 4]
+  10:['Fine Line', 'Harry Styles', 'Pop', 4]
+}
+
+def buy_songs(self, title, notes_price,notes_balance):
+  if notes_balance >= notes_price:
+    Account.my_songs.append(title)
+    Account.notes_balance -= notes_price
+    return True
+  else:
+    print("Not enough Notes to get By!")
+
 
 class Account:
-  def __init__(self,name,notes_balance=10,song_amount=0):
-    self.name = name
-    self.song_amount = song_amount
-    self.notes_balance = notes_balance
+  def __init__(self, username, password, notes_balance=10):
+    self.username = username
+    self.password = password 
+    self.notes_balance = 10
+    self.my_songs = []
+    
+class Song:
+  def __init__(self, key, notes_price, title, artist, genre):
+    self.key = key
+    self.title = title
+    self.artist = artist
+    self.genre = genre
 
-  def buy(self,notes_price,all_songs,song_amount):
-    # once you buy songs, you also lose the amount of notes you had
-    if self.notes_balance >= notes_price:
-      # this is to say "if the notes balance is greater or equal to the note price"
-      # self.all_songs.append(saved_songs)
-      self.notes_balance += notes_price
-    else:
-      return False
-  def upload(self,notes_price,all_songs,my_songs):
-    if self.my_songs.append(all_songs):
-      self.notes_balance += 10
-      pass
 
 def menu():
-  created_accounts = []
-  current = None
   while True:
-    print("Welcome to Noteby! What would you like to do today")
-    print("1.Access Account")
+    print("What would you like to do today")
+    print("1.Login to Account")  
     print("2.Create account ")
-    print("3.Buy Songs")
-    print("4.View Your Songs")
-    print("5.Buy Notes")
-    print("6.View Note Balance")
+    print('3.View All Songs')
+    print("4.Buy Songs")
+    print("5.View Your Songs")
+    print("6.Buy Notes")
     choice = input()
+# login
+    global user
     if choice == "1":
       userIn = input('Enter username: ')
-      for i in range(len(created_accounts)):
-        if created_accounts[i].name==userIn:
-          current=created_accounts[i]
-          print("Account Created")
-        else:
-          print('Account not found')
+      passIn = input('Enter password: ')
+      if userIn in accounts:
+        if accounts[userIn].password == passIn:    
+          print('Welcome to your Account')
+          user = accounts[userIn]
+          print('Your balance is:', user.notes_balance)
+          menu()
           break
+      print('Account not found')
+      break
+# create account
     if choice == "2":
-      current = input('Username: ')
-      a = Account(current)
-      created_accounts.append(a)
-      print("Welcome to your account")
+      # global userIn
+      username = input('Username: ')
+      password = input('Password: ')
+      user = Account(username,password)
+      # accounts = 'user'
+      accounts[username] = user
+      # print(accounts)
+      print('Account Created')
+      s.close()
+
+    if choice == '3':
+      print([songs])
+      print(user.my_songs)
+
+    if choice == '4':
+      select = int(input("What song would you like to buy? Please choose a number: "))
+      print(songs[select])
+      song_choice = input("Are you sure you want to buy this song?")
+      if song_choice == 'yes':
+        if user.notes_balance >= songs[select][3]:
+          user.my_songs.append(songs[select][0])
+          user.notes_balance -= int(songs[select][3])
+          menu()
+          break
+        else:
+          print("Not enough Notes to get By!")
+      
+    if choice == '5':
+      # song_list = 
+      print(user.my_songs)
+      # print(Account.my_songs)
+
+    if choice == '6':
+      print(user.notes_balance)
+      notes_choice = int(input('How many notes would you like to buy? Please enter a number: '))
+      total = user.notes_balance + notes_choice
+      print('Your now have', total, 'notes')
+  # function to buy songs with notes
+  
 menu()
-
-def main():
-  a = Account('me','user','123', 'all songs 1,2,3','my songs 1,2,3', 'saved songs 1,2,3')
-  # savings.accountType()
-  a.notes_balance += 30
-  print(a.notes_balance)
-  a.buy(int(5),'song1','song2')
-  # this is supposed to move 1 song from all songs to saved somgs
-  print(a.saved_songs)
-   # if self.my_songs (I want this to basically say if a song moved from all_songs is uploaded to saved_songs, the user gets 10 more notes)
-
-  pass
-# menu()
-main()
